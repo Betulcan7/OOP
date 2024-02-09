@@ -1,38 +1,34 @@
 <?php
 
-
 class House {
+    // Attributen
+    private $volume;
+    private $rooms = [];
 
-    // attributen van het huis
-    private int $floor;
-    private int $rooms;
-    private Room $rooms[];
-
-    public function {
-        $this->floor = $floor;
-        $this->rooms = $rooms;
-
+    // Methode om een kamer aan het huis toe te voegen
+    public function addRoom($room) {
+        $this->rooms[] = $room;
     }
 
-}
+    // Methode om alle kamers van het huis op te halen
+    public function getRooms() {
+        return $this->rooms;
+    }
 
-public function addRooms() {
+    // Methode om de totale volume van het huis te berekenen
+    public function getTotalVolume() {
+        $totalVolume = 0;
+        foreach ($this->rooms as $room) {
+            $totalVolume += $room->getVolume();
+        }
+        return $totalVolume;
+    }
 
-}
-
-public function getRooms() {
-
-    return "Inhoud kamers: </br> Lengte: {$this->length} Breedte: {$this->width} Hoogte: {$this->height}.";
-}
-
-public function getTotalVolume() {
-
-    return "Volume Totaal = {$this->volume}.";
-}
-
-public function getPrice() {
-
-    return "Prijs van het huis is = {$this->price}.";
+    // Methode om de prijs van het huis te berekenen
+    public function getPrice() {
+        $price_per_cubic_meter = 1500; // Prijs per kubieke meter
+        return $this->getTotalVolume() * $price_per_cubic_meter;
+    }
 }
 
 ?>
