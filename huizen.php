@@ -42,11 +42,11 @@ $house1 = new House(2, 4, 5, 5, 4);
 $house2 = new House(3, 6, 6, 5, 5);
 $house3 = new House(2, 3, 4, 6, 5);
 
-echo $house1->getHouse() . " " . $house1->getPrice() . "\n";
+echo $house1->getHouse() . " " . $house1->getPrice();
 echo("</br>");
-echo $house2->getHouse() . " " . $house2->getPrice() . "\n";
+echo $house2->getHouse() . " " . $house2->getPrice();
 echo("</br>");
-echo $house3->getHouse() . " " . $house3->getPrice() . "\n";
+echo $house3->getHouse() . " " . $house3->getPrice();
 
 ?>
 
