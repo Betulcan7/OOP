@@ -8,10 +8,10 @@ class User extends Database{
     private $password;
     private $role;
 
-    public function registeruser($username, $password, $role) {
-        echo "Registeer user <br>";
+    public function registerUser($username, $pwd, $role) {
+        echo "Registreer user<br>";
         $this->username = $username;
-        $this->password = $password;
+        $this->password = $pwd;
         $this->role = $role;
 
         // sla de data op in de database.
