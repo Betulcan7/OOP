@@ -25,26 +25,34 @@ class User{
     public function RegisterUser(){
         $status = false;
         $errors=[];
-        if($this->username != "" || $this->password != ""){
-
-            // Check user exist
-            if(true){
-                array_push($errors, "Username bestaat al.");
+    
+        try {
+            // Maak verbinding met de database
+            $pdo = new PDO("mysql:host=localhost;dbname=login_oop", "jouw_gebruikersnaam", "jouw_wachtwoord");
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Inschakelen van foutmodus voor uitzonderingen
+    
+            // Voorbereidde statement om de gebruiker toe te voegen aan de database
+            $stmt = $pdo->prepare("INSERT INTO `user` (`username`, `password`) VALUES (?, ?)");
+            $stmt->execute([$this->username, $this->password]);
+    
+            // Controleer of de gebruiker succesvol is toegevoegd
+            if ($stmt->rowCount() > 0) {
+                // Gebruiker succesvol toegevoegd
+                $status = true;
             } else {
-                // Insert user into database
-                try {
-                    $pdo = new PDO("mysql:host=localhost;dbname=login_oop", "jouw_gebruikersnaam", "jouw_wachtwoord");
-                    $sql = "INSERT INTO user (username, password) VALUES (:username, :password)";
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->execute(['username' => $this->username, 'password' => $this->password]);
-                    $status = true;
-                } catch(PDOException $e) {
-                    array_push($errors, "Databasefout: " . $e->getMessage());
-                }
+                // Voeg een foutmelding toe aan $errors array
+                array_push($errors, "Er is een fout opgetreden tijdens het toevoegen van de gebruiker aan de database.");
             }
-        }
+        } catch (PDOException $e) {
+            // Vang eventuele fouten op die optreden bij het maken van de verbinding of het uitvoeren van de query
+            array_push($errors, "Databasefout: " . $e->getMessage());
+        }  
+    
         return $errors;
     }
+    
+    
+    
 
     function ValidateUser(){
         $errors=[];
@@ -65,7 +73,7 @@ class User{
     public function LoginUser(){
         // Connecteer met de database
         try {
-            $pdo = new PDO("mysql:host=localhost;dbname=login_oop", "jouw_gebruikersnaam", "jouw_wachtwoord");
+            $pdo = new PDO("mysql:host=localhost;dbname=login_oop", "gebruikersnaam", "wachtwoord");
         } catch (PDOException $e) {
             die("Databasefout: " . $e->getMessage());
         }
