@@ -1,6 +1,7 @@
 <?php
 // Functie: classdefinitie User 
 // Auteur: Wigmans
+namespace LoginOop\Oop\Classes;
 
 class User{
 

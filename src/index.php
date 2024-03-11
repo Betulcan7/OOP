@@ -20,7 +20,9 @@ session_start();
 	<br />
 	<?php
 
-    require_once 'classes/user.php';
+    // require_once 'classes/user.php';
+	require_once "../vendor/autoload.php";
+	use LoginOop\Oop\Classes\User;
 
     $user = new User();
 

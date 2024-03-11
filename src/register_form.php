@@ -9,7 +9,9 @@
 <?php
 // Is de register button aangeklikt?
 if(isset($_POST['register-btn'])){
-    require_once('classes/user.php');
+    //require_once('classes/user.php');
+    require_once "../vendor/autoload.php";
+	
     $user = new User();
     $errors=[];
 

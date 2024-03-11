@@ -1,7 +1,11 @@
 <?php
 if(isset($_POST['login-btn']) ){
 
-    require_once('classes/user.php');
+    // require_once('classes/user.php');
+    require_once "../vendor/autoload.php";
+	
+   
+
     $user = new User();
 
     $user->username = $_POST['username'];
