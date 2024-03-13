@@ -1,24 +1,23 @@
 <?php
 // Functie: classdefinitie User 
 // Auteur: Wigmans
-namespace LoginOop\Oop\Classes;
 
 class User{
 
     // Eigenschappen 
     public $username;
     private $password;
-    private $pdo;
-
-    function __construct() {
-        // Maak verbinding met de database
-        $this->pdo = new PDO("mysql:host=localhost;dbname=login_oop", "root", "");
-        // Zet de PDO-error-modus naar uitzonderingen
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    }
     
     function SetPassword($password){
         $this->password = $password;
+    }
+    function GetPassword(){
+        return $this->password;
+    }
+
+    public function ShowUser() {
+        echo "<br>Username: $this->username<br>";
+        echo "<br>Password: $this->password<br>";
     }
 
     public function RegisterUser(){
@@ -26,9 +25,12 @@ class User{
         $errors=[];
         if($this->username != "" || $this->password != ""){
             try {
+                // Maak verbinding met de database
+                $pdo = new PDO("mysql:host=localhost;dbname=login_oop", "jouw_gebruikersnaam", "jouw_wachtwoord");
+
                 // SQL-query voor het invoegen van gebruiker
                 $sql = "INSERT INTO user (username, password) VALUES (:name, :pwd)";
-                $query = $this->pdo->prepare($sql);
+                $query = $pdo->prepare($sql);
                 $query->execute([
                     'name' => $this->username,
                     'pwd' => $this->password
@@ -67,8 +69,15 @@ class User{
     }
 
     public function LoginUser(){
+        // Connecteer met de database
+        try {
+            $pdo = new PDO("mysql:host=localhost;dbname=login_oop", "jouw_gebruikersnaam", "jouw_wachtwoord");
+        } catch (PDOException $e) {
+            die("Databasefout: " . $e->getMessage());
+        }
+    
         // Zoek gebruiker in de tabel 'user'
-        $stmt = $this->pdo->prepare("SELECT * FROM `user` WHERE `username` = ?");
+        $stmt = $pdo->prepare("SELECT * FROM `user` WHERE `username` = ?");
         $stmt->execute([$this->username]);
         $user = $stmt->fetch();
     
@@ -83,14 +92,18 @@ class User{
     }
 
    // Check if the user is already logged in
-    public function IsLoggedin() {
-        // Controleer of de sessievariabele voor ingelogde gebruiker is ingesteld
-        return isset($_SESSION['username']);
-    }
+public function IsLoggedin() {
+    // Controleer of de sessievariabele voor ingelogde gebruiker is ingesteld
+    return isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+}
+
 
     public function GetUser($username){
+        // Maak verbinding met de database
+        $pdo = new PDO("mysql:host=localhost;dbname=login_oop", "jouw_gebruikersnaam", "jouw_wachtwoord");
+    
         // Voorbereidde statement om de gebruiker op te halen met de opgegeven gebruikersnaam
-        $stmt = $this->pdo->prepare("SELECT * FROM `user` WHERE `username` = ?");
+        $stmt = $pdo->prepare("SELECT * FROM `user` WHERE `username` = ?");
         $stmt->execute([$username]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
@@ -105,11 +118,23 @@ class User{
     }
 
     public function Logout(){
-        // Verwijder de gebruiker uit de sessie
-        unset($_SESSION['username']);
-        // Stuur de gebruiker terug naar de indexpagina 
+        // Controleer of er al een sessie actief is
+        if(session_status() == PHP_SESSION_NONE) {
+            // Start de sessie
+            session_start();
+        }
+        
+        // Verwijder alle sessievariabelen
+        $_SESSION = [];
+    
+        // Vernietig de sessie
+        session_destroy();
+    
+        // Stuur de gebruiker terug naar de indexpagina of een andere gewenste bestemming
         header('location: index.php');
-        exit; 
+        exit; // Zorg ervoor dat er na de header() geen andere code wordt uitgevo
+    
     }
+    
 }
 ?>
