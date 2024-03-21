@@ -110,5 +110,12 @@ class User{
         header('location: index.php');
         exit; 
     }
+
+    public function ShowUser() {
+        // Implementeer de logica om gebruikersinformatie weer te geven
+        echo "Gebruikersnaam: " . $this->username;
+        // Voeg andere informatie toe die je wilt weergeven
+    }
+
 }
 ?>

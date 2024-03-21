@@ -1,48 +1,44 @@
 <?php
-if(isset($_POST['login-btn']) ){
+// Inschakelen van foutmeldingen voor debuggen
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
+if(isset($_POST['login-btn']) ){
     require_once('classes/user.php');
     $user = new User();
 
     $user->username = $_POST['username'];
     $user->SetPassword($_POST['password']);
 
-    $user->ShowUser();
-
     $errors = $user->ValidateUser();
 
-    if(count($errors)== 0){
+    if(count($errors) == 0){
         if ($user->LoginUser()){
-            echo "LOgin ok";
+            // Sessievariabelen instellen na succesvol inloggen
+            session_start();
+            $_SESSION['username'] = $user->username;
             header("location: index.php");
-        } else
-        {
+            exit();
+        } else {
             array_push($errors, "Login mislukt");
-            echo "LOgin NOT ok";
         }
     }
 
     if(count($errors) > 0){
-        $message = "";
-        foreach ($errors as $error) {
-            $message .= $error . "\\n";
-        }
+        $message = implode("\\n", $errors);
         
-        echo "
-        <script>alert('" . $message . "')</script>
-        <script>window.location = 'login_form.php'</script>";
-    
+        echo "<script>alert('" . $message . "')</script>";
     }
-    
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <title>Login</title>
 </head>
 <body>
-
     <h3>PHP - PDO Login and Registration</h3>
     <hr/>
     
@@ -60,6 +56,5 @@ if(isset($_POST['login-btn']) ){
         <br>
         <a href="register_form.php">Registration</a>
     </form>
-        
 </body>
 </html>
