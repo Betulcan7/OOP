@@ -81,7 +81,7 @@ class User{
         }
     }
 
-   // Check if the user is already logged in
+   // Kijt of de gebruiker al is ingelogd
     public function IsLoggedin() {
         // Controleer of de sessievariabele voor ingelogde gebruiker is ingesteld
         return isset($_SESSION['username']);
@@ -95,7 +95,7 @@ class User{
     
         // Controleer of de gebruiker is gevonden
         if ($user) {
-            // Vul de eigenschappen van het User-object met waarden uit de database
+            // Vul de eigenschappen van het User object met waarden uit de database
             $this->username = $user['username'];
         } else {
             // Gebruiker niet gevonden, retourneer NULL
@@ -112,7 +112,7 @@ class User{
     }
 
     public function ShowUser() {
-        // Implementeer de logica om gebruikersinformatie weer te geven
+        // gebruikersinformatie weer geven
         echo "Gebruikersnaam: " . $this->username;
         // Voeg andere informatie toe die je wilt weergeven
     }
