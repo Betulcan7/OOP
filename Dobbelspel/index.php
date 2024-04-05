@@ -51,7 +51,7 @@ if (isset($_POST['throw_dice'])) {
 
 <?php
 if ($game->getThrowCount() > 0) {
-    echo "<h2>Resultaat van worp " . $game->getThrowCount() . ":</h2>";
+    echo "<h2>Resultaat van werp " . $game->getThrowCount() . ":</h2>";
     echo "<div>";
     foreach ($game->getDiceValues() as $value) {
         echo "<div class='dice'>" . $value . "</div>";
@@ -63,7 +63,7 @@ if ($game->getThrowCount() > 0) {
 <?php
 if ($game->getThrowCount() > 0) {
     echo "<h2>Score:</h2>";
-    echo "<p>Score van speler " . $game->getCurrentPlayer() . ": " . $game->getPlayerScore() . "</p>"; // Hier is de toevoeging
+    echo "<p>Score van speler " . $game->getCurrentPlayer() . ": " . $game->getPlayerScore() . "</p>"; 
 }
 ?>
 

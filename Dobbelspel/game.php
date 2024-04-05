@@ -31,8 +31,6 @@ class Game {
     }
 
     private function calculateScore() {
-        // Hier kunt u uw scoreberekeningslogica implementeren
-        // Bijvoorbeeld, tel gewoon de waarden van de dobbelstenen op
         $totalScore = array_sum($this->diceValues);
         $this->playerScores[$this->currentPlayer] += $totalScore;
     }
